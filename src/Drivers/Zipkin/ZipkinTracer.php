@@ -28,6 +28,7 @@ use Vinelab\Tracing\Propagation\Formats;
 use Zipkin\Endpoint;
 use Zipkin\Reporter;
 use Zipkin\Reporters\Http as HttpReporter;
+use Zipkin\Reporters\Log as LogReporter;
 use Zipkin\Sampler;
 use Zipkin\Samplers\BinarySampler;
 use Zipkin\TracingBuilder;

@@ -7,6 +7,9 @@ use Illuminate\Support\Manager;
 use Vinelab\Tracing\Contracts\Tracer;
 use Vinelab\Tracing\Drivers\Null\NullTracer;
 use Vinelab\Tracing\Drivers\Zipkin\ZipkinTracer;
+use Vinelab\Tracing\Drivers\Zipkin\ZipkinLogTracer;
+use Illuminate\Support\Facades\Log;
+use Zipkin\Reporter\Log as LogReporter;
 
 class TracingDriverManager extends Manager
 {
@@ -46,12 +49,24 @@ class TracingDriverManager extends Manager
      */
     public function createZipkinDriver()
     {
+        $reporter = null;
+
+        switch ($this->config->get('tracing.zipkin.reporter')) {
+            case null:
+                $reporter = null;
+                break;
+            case "log":
+                $reporter = new LogReporter(Log);
+                break;    
+        }
+                
         $tracer = new ZipkinTracer(
             $this->config->get('tracing.service_name'),
             $this->config->get('tracing.zipkin.host'),
             $this->config->get('tracing.zipkin.port'),
             $this->config->get('tracing.zipkin.options.128bit'),
-            $this->config->get('tracing.zipkin.options.request_timeout', 5)
+            $this->config->get('tracing.zipkin.options.request_timeout', 5),
+            $reporter
         );
 
         ZipkinTracer::setMaxTagLen(
