@@ -55,7 +55,7 @@ class TracingDriverManager extends Manager
             case null:
                 $reporter = null;
                 break;
-            case "log":
+            case 'log':
                 $reporter = new LogReporter(Log);
                 break;    
         }
