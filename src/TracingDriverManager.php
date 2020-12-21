@@ -9,7 +9,7 @@ use Vinelab\Tracing\Drivers\Null\NullTracer;
 use Vinelab\Tracing\Drivers\Zipkin\ZipkinTracer;
 use Vinelab\Tracing\Drivers\Zipkin\ZipkinLogTracer;
 use Illuminate\Support\Facades\Log;
-use Zipkin\Reporter\Log as LogReporter;
+use Zipkin\Reporters\Log as LogReporter;
 
 class TracingDriverManager extends Manager
 {
@@ -56,7 +56,7 @@ class TracingDriverManager extends Manager
                 $reporter = null;
                 break;
             case 'log':
-                $reporter = new LogReporter(Log);
+                $reporter = new LogReporter(Log::getLogger());
                 break;    
         }
                 
